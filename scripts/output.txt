@@ -1,0 +1,93 @@
+run3_2022_postEE_nano_tau_v12
+INFO: luigi-interface - Informed scheduler that task   cf.ReduceEvents_higgs_cp_config___1__aefd0fddec   has status   PENDING
+INFO: Informed scheduler that task   cf.ReduceEvents_higgs_cp_config___1__aefd0fddec   has status   PENDING
+INFO: luigi-interface - Informed scheduler that task   cf.BundleCMSSWSandbox_higgs_cp_config__NO_STR_5_0d9b89b728   has status   PENDING
+INFO: Informed scheduler that task   cf.BundleCMSSWSandbox_higgs_cp_config__NO_STR_5_0d9b89b728   has status   PENDING
+INFO: luigi-interface - Informed scheduler that task   cf.BuildBashSandbox_higgs_cp_config__bash___afs_cern___afs_cern_ch_wor_d71910fb6d   has status   DONE
+INFO: Informed scheduler that task   cf.BuildBashSandbox_higgs_cp_config__bash___afs_cern___afs_cern_ch_wor_d71910fb6d   has status   DONE
+INFO: luigi-interface - Informed scheduler that task   cf.BundleBashSandbox_higgs_cp_config__5__CF_BASE_sandbox_9fa41a29f6   has status   PENDING
+INFO: Informed scheduler that task   cf.BundleBashSandbox_higgs_cp_config__5__CF_BASE_sandbox_9fa41a29f6   has status   PENDING
+INFO: luigi-interface - Informed scheduler that task   cf.BuildBashSandbox_higgs_cp_config__bash___afs_cern___afs_cern_ch_wor_d1058b0b29   has status   DONE
+INFO: Informed scheduler that task   cf.BuildBashSandbox_higgs_cp_config__bash___afs_cern___afs_cern_ch_wor_d1058b0b29   has status   DONE
+INFO: luigi-interface - Informed scheduler that task   cf.BundleBashSandbox_higgs_cp_config__5__CF_BASE_sandbox_4338e2872d   has status   PENDING
+INFO: Informed scheduler that task   cf.BundleBashSandbox_higgs_cp_config__5__CF_BASE_sandbox_4338e2872d   has status   PENDING
+INFO: luigi-interface - Informed scheduler that task   cf.BuildBashSandbox_higgs_cp_config__bash___afs_cern___afs_cern_ch_wor_210e9e6cc7   has status   DONE
+INFO: Informed scheduler that task   cf.BuildBashSandbox_higgs_cp_config__bash___afs_cern___afs_cern_ch_wor_210e9e6cc7   has status   DONE
+INFO: luigi-interface - Informed scheduler that task   cf.BundleSoftware_higgs_cp_config__5_NO_STR_ec266ba5ab   has status   PENDING
+INFO: Informed scheduler that task   cf.BundleSoftware_higgs_cp_config__5_NO_STR_ec266ba5ab   has status   PENDING
+INFO: luigi-interface - Informed scheduler that task   cf.BundleRepo_higgs_cp_config__NO_STR__d1e2b0b296   has status   PENDING
+INFO: Informed scheduler that task   cf.BundleRepo_higgs_cp_config__NO_STR__d1e2b0b296   has status   PENDING
+INFO: luigi-interface - Informed scheduler that task   cf.SelectEvents_higgs_cp_config___1__2c6d25cee3   has status   PENDING
+INFO: Informed scheduler that task   cf.SelectEvents_higgs_cp_config___1__2c6d25cee3   has status   PENDING
+INFO: luigi-interface - Informed scheduler that task   cf.BundleExternalFiles_higgs_cp_config__run3_2022_postEE_5_3b38e639a2   has status   DONE
+INFO: Informed scheduler that task   cf.BundleExternalFiles_higgs_cp_config__run3_2022_postEE_5_3b38e639a2   has status   DONE
+INFO: luigi-interface - Informed scheduler that task   cf.CalibrateEvents_higgs_cp_config___1__22ac2cb8f6   has status   PENDING
+INFO: Informed scheduler that task   cf.CalibrateEvents_higgs_cp_config___1__22ac2cb8f6   has status   PENDING
+INFO: luigi-interface - Informed scheduler that task   cf.GetDatasetLFNs_higgs_cp_config__run3_2022_postEE_signal_878f992993   has status   DONE
+INFO: Informed scheduler that task   cf.GetDatasetLFNs_higgs_cp_config__run3_2022_postEE_signal_878f992993   has status   DONE
+INFO: luigi-interface - Done scheduling tasks
+INFO: Done scheduling tasks
+INFO: luigi-interface - Running Worker with 1 processes
+INFO: Running Worker with 1 processes
+INFO: luigi-interface - [pid 611031] Worker Worker(salt=3522898824, workers=1, host=lxplus800.cern.ch, username=stzakhar, pid=611031) running   cf.BundleRepo(include_files=, custom_checksum=NO_STR, source_path=NO_STR, analysis=higgs_cp.config.analysis_higgs_cp.analysis_higgs_cp, replicas=5)
+INFO: [pid 611031] Worker Worker(salt=3522898824, workers=1, host=lxplus800.cern.ch, username=stzakhar, pid=611031) running   cf.BundleRepo(include_files=, custom_checksum=NO_STR, source_path=NO_STR, analysis=higgs_cp.config.analysis_higgs_cp.analysis_higgs_cp, replicas=5)
+INFO: luigi-interface - Worker Worker(salt=3522898824, workers=1, host=lxplus800.cern.ch, username=stzakhar, pid=611031) was stopped. Shutting down Keep-Alive thread
+INFO: Worker Worker(salt=3522898824, workers=1, host=lxplus800.cern.ch, username=stzakhar, pid=611031) was stopped. Shutting down Keep-Alive thread
+Traceback (most recent call last):
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/bin/law", line 10, in <module>
+    exit_code = run()
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/modules/law/law/cli/cli.py", line 74, in run
+    return mods[prog].execute(*exec_args)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/modules/law/law/cli/run.py", line 94, in execute
+    luigi_run([task_family] + argv[3:])
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/software/venvs/cf_dev_9b04c75c/lib/python3.9/site-packages/luigi/cmdline.py", line 9, in luigi_run
+    run_with_retcodes(argv)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/software/venvs/cf_dev_9b04c75c/lib/python3.9/site-packages/luigi/retcodes.py", line 75, in run_with_retcodes
+    worker = luigi.interface._run(argv).worker
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/software/venvs/cf_dev_9b04c75c/lib/python3.9/site-packages/luigi/interface.py", line 217, in _run
+    return _schedule_and_run([cp.get_task_obj()], worker_scheduler_factory)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/modules/law/law/patches.py", line 93, in _schedule_and_run
+    return _schedule_and_run_orig(*args, **kwargs)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/software/venvs/cf_dev_9b04c75c/lib/python3.9/site-packages/luigi/interface.py", line 177, in _schedule_and_run
+    success &= worker.run()
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/modules/law/law/patches.py", line 90, in run
+    return run_orig(self)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/software/venvs/cf_dev_9b04c75c/lib/python3.9/site-packages/luigi/worker.py", line 1252, in run
+    self._run_task(get_work_response.task_id)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/modules/law/law/patches.py", line 230, in _run_task
+    _run_task_orig(self, task_id)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/software/venvs/cf_dev_9b04c75c/lib/python3.9/site-packages/luigi/worker.py", line 1055, in _run_task
+    task_process.run()
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/software/venvs/cf_dev_9b04c75c/lib/python3.9/site-packages/luigi/worker.py", line 302, in run
+    super(ContextManagedTaskProcess, self).run()
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/modules/law/law/patches.py", line 124, in run
+    return run_orig(self)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/software/venvs/cf_dev_9b04c75c/lib/python3.9/site-packages/luigi/worker.py", line 203, in run
+    new_deps = self._run_get_new_deps()
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/software/venvs/cf_dev_9b04c75c/lib/python3.9/site-packages/luigi/worker.py", line 138, in _run_get_new_deps
+    task_gen = self.task.run()
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/modules/law/law/decorator.py", line 244, in wrapper
+    return decorator(fn, _opts, *args, **kwargs)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/modules/law/law/decorator.py", line 272, in log
+    return fn(task, *args, **kwargs)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/modules/law/law/decorator.py", line 231, in wrapper
+    result = call(state)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/modules/law/law/decorator.py", line 303, in call
+    return fn(task, *args, **kwargs)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/columnflow/tasks/framework/remote.py", line 49, in run
+    self.bundle(bundle)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/modules/law/law/contrib/git/__init__.py", line 99, in bundle
+    code = interruptable_popen(cmd, shell=True, executable="/bin/bash")[0]
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/modules/columnflow/modules/law/law/util.py", line 1345, in interruptable_popen
+    out, err = p.communicate(stdin_data)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/software/conda/lib/python3.9/subprocess.py", line 1126, in communicate
+    self.wait()
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/software/conda/lib/python3.9/subprocess.py", line 1189, in wait
+    return self._wait(timeout=timeout)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/software/conda/lib/python3.9/subprocess.py", line 1933, in _wait
+    (pid, sts) = self._try_wait(0)
+  File "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/software/conda/lib/python3.9/subprocess.py", line 1891, in _try_wait
+    (pid, sts) = os.waitpid(self.pid, wait_flags)
+KeyboardInterrupt
+rsync error: received SIGINT, SIGTERM, or SIGHUP (code 20) at rsync.c(644) [sender=3.1.3]
+rsync error: received SIGINT, SIGTERM, or SIGHUP (code 20) at io.c(511) [generator=3.1.3]

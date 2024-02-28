@@ -17,12 +17,14 @@ def trigger_selection(
 
     # start with an all-false mask
     sel_trigger = np.array(np.zeros(len(events), dtype=np.bool_))
-
+    #from IPython import embed
+    #embed()
     # pick events that passed one of the required triggers
     for trigger in self.dataset_inst.x("require_triggers"):
         #print(f"Requiring trigger: {trigger}")
         single_fired = events.HLT[trigger]
         sel_trigger = sel_trigger | single_fired
+    print(ak.sum(single_fired))
 
     return events, SelectionResult(
         steps={

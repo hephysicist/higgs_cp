@@ -10,7 +10,7 @@ from columnflow.selection import Selector, SelectionResult, selector
 from columnflow.columnar_util import set_ak_column
 from columnflow.util import DotDict, maybe_import
 from columnflow.production.util import attach_coffea_behavior
-from IPython import embed
+#from IPython import embed
 
 
 np = maybe_import("numpy")
@@ -345,7 +345,7 @@ def extra_lepton_veto(
         # Muon nano columns
         f"Muon.{var}" for var in [
         "pt", "eta", "phi", "mass", "charge", "mediumId", "pfRelIso04_all",
-        "isPFcand", "isGlobal", "isTracker"] 
+        "isPFcand", "isGlobal"] #, "isTracker"
     # } | {
     #     f"Tau.{var}" for var in ["pt", "eta", "phi", "dz", "dxy", "charge"] 
     # } | {
@@ -373,7 +373,7 @@ def dilepton_veto(
         dimu_mask = dimu_mask & (muon.pt > 15)
         dimu_mask = dimu_mask & (abs(muon.eta) < 2.4)
         dimu_mask = dimu_mask & muon.isGlobal
-        dimu_mask = dimu_mask & muon.isTracker
+        #dimu_mask = dimu_mask & muon.isTracker
         dimu_mask = dimu_mask & muon.isPFcand
         dimu_mask = dimu_mask & (muon.dz < 0.2)
         dimu_mask = dimu_mask & (muon.dxy < 0.045)

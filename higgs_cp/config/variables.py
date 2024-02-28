@@ -15,7 +15,8 @@ def keep_columns(cfg: od.Config) -> None:
         "cf.ReduceEvents": {
             # general event info
             "run", "luminosityBlock", "event",
-            "PV.npvs",
+            "PV.npvs","Pileup.nPU","genWeight", "LHEWeight.originalXWGTUP",
+            
             "deterministic_seed", "process_id", "cutflow.*",
         } | {f"MET.{var}" for var in [
                 "pt", "phi", "significance",
@@ -127,7 +128,7 @@ def add_variables(cfg: od.Config) -> None:
     cfg.add_variable(
         name="mc_weight",
         expression="mc_weight",
-        binning=(200, -10, 10),
+        binning=(200, -100, 100),
         x_title="MC weight",
     )
     # cutflow variables
@@ -143,7 +144,7 @@ def add_variables(cfg: od.Config) -> None:
         name="muon_eta",
         expression="Muon.eta",
         null_value=EMPTY_FLOAT,
-        binning=(20, -3.0, 3.0),
+        binning=(30, -3.0, 3.0),
         x_title=r"muon $\eta$",
     )
     
@@ -151,7 +152,7 @@ def add_variables(cfg: od.Config) -> None:
         name="muon_pt",
         expression="Muon.pt",
         null_value=EMPTY_FLOAT,
-        binning=(20, 0.0, 100.0),
+        binning=(30, 20.0, 80.0),
         unit="GeV",
         x_title=r"muon $p_{T}$",
     )
@@ -175,7 +176,7 @@ def add_variables(cfg: od.Config) -> None:
         name="tau_eta",
         expression="Tau.eta",
         null_value=EMPTY_FLOAT,
-        binning=(20, -3.0, 3.0),
+        binning=(30, -3.0, 3.0),
         x_title=r"tau $\eta$",
     )
     
@@ -183,7 +184,7 @@ def add_variables(cfg: od.Config) -> None:
         name="tau_pt",
         expression="Tau.pt",
         null_value=EMPTY_FLOAT,
-        binning=(20, 0.0, 200.0),
+        binning=(30, 25, 85),
         unit="GeV",
         x_title=r"tau $p_{T}$",
     )
@@ -204,4 +205,13 @@ def add_variables(cfg: od.Config) -> None:
         binning=(40, 0.0, 200.0),
         unit="GeV",
         x_title=r"$m_{vis}$",
+    )
+    
+    cfg.add_variable(
+        name="pu_weight",
+        expression="pu_weight",
+        null_value=EMPTY_FLOAT,
+        binning=(30, 0,3),
+        unit="GeV",
+        x_title=r"Pileup weight",
     )

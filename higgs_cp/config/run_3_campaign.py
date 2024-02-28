@@ -57,9 +57,10 @@ def add_run3_campaign(ana: od.Analysis,
 
     # add datasets we need to study
     dataset_names = ["data_mu_f",
+                     "data_mu_g",
                      "signal",
                      "dy_incl",
-                     "wj_incl"
+                     "wj_incl",
                      ]
     
     for dataset_name in dataset_names:
@@ -207,6 +208,12 @@ def add_run3_campaign(ana: od.Analysis,
             "golden": ("/eos/user/c/cmsdqm/www/CAF/certification/Collisions22/Cert_Collisions2022_355100_362760_Golden.json", "v1"),  # noqa
             "normtag": ("/afs/cern.ch/user/l/lumipro/public/Normtags/normtag_PHYSICS.json", "v1"),
         },
+        "pileup":{
+            #"json": ("/eos/user/c/cmsdqm/www/CAF/certification/Collisions22/PileUp/EFG/pileup_JSON.txt", "v1")
+            "data" : "/afs/cern.ch/user/s/stzakhar/work/run3_taufw/CMSSW_10_6_13/src/TauFW/PicoProducer/data/pileup/Data_PileUp_2022_postEE.root",
+            "mc"   : "/afs/cern.ch/user/s/stzakhar/work/run3_taufw/CMSSW_10_6_13/src/TauFW/PicoProducer/data/pileup/MC_PileUp_2022.root"
+        },
+        "muon_correction" : "/afs/cern.ch/user/s/stzakhar/work/run3_taufw/CMSSW_10_6_13/src/TauFW/PicoProducer/data/lepton/MuonPOG/Run2022postEE/muon_SFs_2022_postEE.root"
 
     })
 
@@ -220,7 +227,8 @@ def add_run3_campaign(ana: od.Analysis,
     #get_shifts = functools.partial(get_shifts_from_sources, cfg)
     cfg.x.event_weights = DotDict({
         "normalization_weight": [],
-        #"muon_weight": get_shifts("mu"),
+        "pu_weight": [],
+        "muon_weight": [],
     })
 
     # versions per task family, either referring to strings or to callables receving the invoking
@@ -250,7 +258,6 @@ def add_run3_campaign(ana: od.Analysis,
             dataset_id = dataset_key.split("/", 1)[1]
             print(f"Creating custom get_dataset_lfns for {config_name}")   
             campagn_name = cfg.campaign.x("custom").get("name")
-            
             lfn_base = law.wlcg.WLCGDirectoryTarget(
                 f"{dataset_id}",
                 fs=f"wlcg_fs_{campagn_name}",

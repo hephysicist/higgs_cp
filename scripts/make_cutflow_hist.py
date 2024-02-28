@@ -29,16 +29,20 @@ def create_cutflow_histogram(cuts, data, xlabel="Selections", ylabel="Selection 
     if log: plt.yscale('log')
     # Plotting the cutflow histogram
     color = ['black','red']
+    
     for i, (name, n_evt) in enumerate(data.items()):
+        
         n_evt = np.array(n_evt)
+        for cut_name, the_n_evt in zip(cuts,n_evt):
+            print(f"{cut_name}: {the_n_evt}")
         if rel:
             x = cuts[1:]
             y = n_evt[1:]/n_evt[:-1]
         else:
             x = cuts
             y = n_evt/n_evt[0]
-        print(f'Event numbers:{n_evt}')
-        ax.scatter(x, y , color=color[i], marker='o', alpha=0.8, label=name)
+        print(f'Event numbers:')
+        ax.scatter(x, y , color=color[i], marker='o', alpha=0.8, label=f"Data {name}")
         n_evt_prev = n_evt
 
     if log: ax.set_ylim((1*10**-2,2*10**0))
@@ -70,6 +74,7 @@ def create_cutflow_histogram(cuts, data, xlabel="Selections", ylabel="Selection 
         "llabel": label_options.get("pw"),
         "fontsize": 22,
         "data": True,
+        'rlabel': "Data to Data"
     }
     mplhep.cms.label(**cms_label_kwargs)
    
@@ -102,9 +107,9 @@ def get_hist_values(pickle_file):
 
 
 
-
-path18 = "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/cf_store/analysis_higgs_cp/cf.CreateCutflowHistograms/run2_UL2018_nano_tau_v10_limited/data_ul2018_a_single_mu/nominal/calib__example/sel__default__steps_trigger_muon_pt_26_muon_eta_2p4_mediumID_muon_dxy_0p045_muon_dz_0p2_muon_iso_0p15_DeepTauVSjet_DeepTauVSe_DeepTauVSmu_tau_eta_2p3_tau_dz_0p2_tau_pt_20_mutau_os_mutau_dr_0p5_mutau_mt_50_single_pair/dev1/cutflow_hist__event.pickle"
-path22 = "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/cf_store/analysis_higgs_cp/cf.CreateCutflowHistograms/run3_2022_postEE_nano_tau_v12_limited/data_mu_f/nominal/calib__example/sel__default__steps_trigger_muon_pt_26_muon_eta_2p4_mediumID_muon_dxy_0p045_muon_dz_0p2_muon_iso_0p15_DeepTauVSjet_DeepTauVSe_DeepTauVSmu_tau_eta_2p3_tau_dz_0p2_tau_pt_20_single_pair_extra_lep_veto_dilep_veto/multi_pair/cutflow_hist__event.pickle"
+path22 = "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/cf_store/analysis_higgs_cp/cf.CreateCutflowHistograms/run3_2022_postEE_nano_tau_v12/data_mu_g/nominal/calib__example/sel__default__steps_trigger_muon_pt_26_muon_eta_2p4_mediumID_muon_dxy_0p045_muon_dz_0p2_muon_iso_0p15_DeepTauVSjet_DeepTauVSe_DeepTauVSmu_tau_eta_2p3_tau_dz_0p2_tau_pt_20_single_pair_extra_lep_veto_dilep_veto/condor_production/cutflow_hist__event.pickle"
+#path18 = "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/cf_store/analysis_higgs_cp/cf.CreateCutflowHistograms/run2_UL2018_nano_tau_v10_limited/data_ul2018_a_single_mu/nominal/calib__example/sel__default__steps_trigger_muon_pt_26_muon_eta_2p4_mediumID_muon_dxy_0p045_muon_dz_0p2_muon_iso_0p15_DeepTauVSjet_DeepTauVSe_DeepTauVSmu_tau_eta_2p3_tau_dz_0p2_tau_pt_20_mutau_os_mutau_dr_0p5_mutau_mt_50_single_pair/dev1/cutflow_hist__event.pickle"
+#path22 = "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/cf_store/analysis_higgs_cp/cf.CreateCutflowHistograms/run3_2022_postEE_nano_tau_v12_limited/data_mu_f/nominal/calib__example/sel__default__steps_trigger_muon_pt_26_muon_eta_2p4_mediumID_muon_dxy_0p045_muon_dz_0p2_muon_iso_0p15_DeepTauVSjet_DeepTauVSe_DeepTauVSmu_tau_eta_2p3_tau_dz_0p2_tau_pt_20_single_pair_extra_lep_veto_dilep_veto/multi_pair/cutflow_hist__event.pickle"
 cuts, values22 = get_hist_values(path22)
 #cuts, values18 = get_hist_values(path18)
 

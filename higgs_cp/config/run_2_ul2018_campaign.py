@@ -49,7 +49,10 @@ def add_run_2_ul2018_campaign(ana: od.Analysis,
         #    proc.color1 = (244, 182, 66) if proc.name == "tt" else (244, 93, 66)
 
     # add datasets we need to study
-    dataset_names = ["data_ul2018_a_single_mu",]
+    dataset_names = ["data_ul2018_a_single_mu",
+                     "data_ul2018_b_single_mu",
+                     "data_ul2018_c_single_mu",
+                     "data_ul2018_d_single_mu"]
     
     for dataset_name in dataset_names:
         # add the dataset
@@ -169,12 +172,18 @@ def add_run_2_ul2018_campaign(ana: od.Analysis,
 
     # external files
     # json_mirror = "/afs/cern.ch/user/m/mrieger/public/mirrors/jsonpog-integration-849c6a6e"
+    
+   
     cfg.x.external_files = DotDict.wrap({
         # lumi files
         "lumi": {
-            "golden": ("/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt", "v1"),  # noqa
+            "golden" : ("/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt", "v1"),  # noqa
             "normtag": ("/afs/cern.ch/user/l/lumipro/public/Normtags/normtag_PHYSICS.json", "v1"),
         },
+        "pileup":{
+            "data" : "/afs/cern.ch/user/s/stzakhar/work/run3_taufw/CMSSW_10_6_13/src/TauFW/PicoProducer/data/pileup/Data_PileUp_2022_postEE.root",
+            "mc"   : "/afs/cern.ch/user/s/stzakhar/work/run3_taufw/CMSSW_10_6_13/src/TauFW/PicoProducer/data/pileup/MC_PileUp_2022.root"
+        }
     })
 
     # target file size after MergeReducedEvents in MB
