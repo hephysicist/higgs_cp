@@ -38,15 +38,15 @@ def dilepton_mass(self: Producer, events: ak.Array, **kwargs) -> ak.Array:
     {
         f"Muon.{var}" for var in ["pt","phi"]
     } | {
-        f"MET.{var}" for var in ["pt","phi"] 
+        f"PuppiMET.{var}" for var in ["pt","phi"] 
     } | {attach_coffea_behavior},
     produces={
         "Muon.mT"
     },
 )
 def mT(self: Producer, events: ak.Array, **kwargs) -> ak.Array:
-    cos_dphi = np.cos(events.Muon.delta_phi(events.MET))
-    mT_values = np.sqrt(2 * events.Muon.pt * events.MET.pt * (1 - cos_dphi))
+    cos_dphi = np.cos(events.Muon.delta_phi(events.PuppiMET))
+    mT_values = np.sqrt(2 * events.Muon.pt * events.PuppiMET.pt * (1 - cos_dphi))
     mT_values = ak.fill_none(mT_values, EMPTY_FLOAT)
     events = set_ak_column_f32(events, Route("Muon.mT"), mT_values)
     return events

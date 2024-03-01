@@ -46,7 +46,7 @@ def default(self: Producer, events: ak.Array, **kwargs) -> ak.Array:
     events = self[category_ids](events, **kwargs)
     if self.dataset_inst.is_mc:
         # add corrected mc weights
-        #events = self[pu_weight](events, **kwargs)
+        events = self[pu_weight](events, **kwargs)
         events = self[muon_weight](events, **kwargs)
         
         events = self[normalization_weights](events, **kwargs)

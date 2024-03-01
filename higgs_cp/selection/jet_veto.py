@@ -9,7 +9,6 @@ from __future__ import annotations
 from columnflow.selection import Selector, SelectionResult, selector
 from columnflow.columnar_util import set_ak_column
 from columnflow.util import DotDict, maybe_import
-#from IPython import embed
 
 
 
@@ -48,7 +47,6 @@ def jet_veto(
         "deepJet_veto_medium"      : events.Jet.btagDeepFlavB > deepJetM_WP
     }
     
-    
     buffer_mask = abs(events.event) > 0
 
     for cut_name in jet_selections.keys():
@@ -60,7 +58,7 @@ def jet_veto(
         
         objects = {
             "Jet" : {
-                "Jet": ~ buffer_mask
+                "Jet_mask": ~ buffer_mask
             }
                 
         }

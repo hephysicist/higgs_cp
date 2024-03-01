@@ -328,15 +328,15 @@ def extra_lepton_veto(
         steps = {
             "extra_lep_veto" : extra_lepton_veto,
         },
-        objects={
-            "Muon": {   
-                "Muon": pair_mu_idx
-            },
-            "Tau": {
-                "Tau": pair_tau_idx
-            }
-        }
-    )
+        # objects={
+        #     "Muon": {   
+        #         "Muon": pair_mu_idx
+        #     },
+        #     "Tau": {
+        #         "Tau": pair_tau_idx
+        #     }
+        # }
+    ), pair_mu_idx, pair_tau_idx
     
     
 
@@ -382,7 +382,7 @@ def dilepton_veto(
     dimu_mask = dimu_mask & ((pair_mu1.charge * pair_mu2.charge) < 0)
     dimu_mask = dimu_mask & (dR_mu1_mu2 > 0.15)
     dilepton_veto = np.array(~ak.any(dimu_mask, axis=1),dtype=np.bool_) 
-    print(ak.sum(ak.num(raw_muon_idx)), ak.sum(ak.sum(dimu_mask,axis=1)))
+    #print(ak.sum(ak.num(raw_muon_idx)), ak.sum(ak.sum(dimu_mask,axis=1)))
     return events, SelectionResult(
         steps = {
             "dilep_veto" : dilepton_veto,

@@ -20,7 +20,7 @@ from columnflow.config_util import (
 ak = maybe_import("awkward")
 
 
-def add_run3_campaign(ana: od.Analysis,
+def add_run3_postEE(ana: od.Analysis,
                       campaign: od.Campaign,
                       config_name           = None,
                       config_id             = None,

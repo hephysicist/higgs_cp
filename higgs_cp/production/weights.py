@@ -13,7 +13,7 @@ set_ak_column_f32 = functools.partial(set_ak_column, value_type=np.float32)
 
 @producer(
     uses={
-        "Pileup.nPU"
+        "Pileup.nTrueInt"
     },
     produces={
         "pu_weight"
@@ -21,9 +21,9 @@ set_ak_column_f32 = functools.partial(set_ak_column, value_type=np.float32)
     mc_only=True,
 )
 def pu_weight(self: Producer, events: ak.Array, **kwargs) -> ak.Array:
-    nPU = events.Pileup.nPU
-    pu_weight = ak.where (self.mc_weight(nPU) != 0,
-                          self.data_weight(nPU)/self.mc_weight(nPU) * self.mc2data_norm,
+    nTrueInt = events.Pileup.nTrueInt
+    pu_weight = ak.where (self.mc_weight(nTrueInt) != 0,
+                          self.data_weight(nTrueInt)/self.mc_weight(nTrueInt) * self.mc2data_norm,
                           0)
     #from IPython import embed
     #embed()

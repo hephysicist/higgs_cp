@@ -1,18 +1,18 @@
 #!/bin/bash
-version="bash_test"
+version="preEE"
 if [ "$1" == "run2" ]; then
     config=run2_UL2018_nano_tau_v10
     datasets="data_ul2018_a_single_mu,data_ul2018_b_single_mu,data_ul2018_c_single_mu,data_ul2018_d_single_mu"
     processes="data"
-elif [ "$1" == "run3" ]; then
-    config="run3_2022_postEE_nano_tau_v12"
+elif [ "$1" == "run3lim" ]; then
+    config="run3_2022_preEE_nano_tau_v12_limited"
     datasets="wj_incl,dy_incl,data_mu_f,data_mu_g"
     processes="wj,dy_lep,data"
 
-elif [ "$1" == "run3lim" ]; then
-    config="run3_2022_postEE_nano_tau_v12_limited"
-    datasets="wj_incl" #,data_mu_f,data_mu_g"
-    processes="wj" #,data"
+elif [ "$1" == "run3" ]; then
+    config="run3_2022_preEE_nano_tau_v12"
+    datasets="data_mu_c,data_mu_d,data_mu_e,wj_incl,ww,wz,zz,wj,tt_sl,tt_dl,tt_fh,dy_incl"
+    processes="data,dy_lep,tt_sl,tt_dl,tt_fh,ww,wz,zz,wj"
 else
     echo "You need to choose [run2, run3] as the first argument"
     exit
@@ -24,9 +24,9 @@ args=(
         --version $version
         --datasets $datasets
         --branch -1
-        --variables muon_pt,muon_eta,muon_phi,tau_pt,tau_eta,tau_phi,muon_mT,mutau_mass
+        --variables muon_pt #,muon_eta,muon_phi,tau_pt,tau_eta,tau_phi,muon_mT,mutau_mass,met_pt,met_phi
         #--workflow htcondor
-        --skip-ratio
+        --general-settings "skip_ratio,cms-label=pw"
         "$@"
     )
 law run cf.PlotVariables1D "${args[@]}"

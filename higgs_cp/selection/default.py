@@ -13,6 +13,7 @@ from columnflow.selection.stats import increment_stats
 from columnflow.columnar_util import remove_ak_column, optional_column as optional
 from higgs_cp.selection.trigger import trigger_selection
 from higgs_cp.selection.lepton  import study_muon_selection, study_tau_selection, mutau_selection, extra_lepton_veto, dilepton_veto
+from higgs_cp.selection.trigger  import trigger_matching
 from higgs_cp.selection.jet_veto import jet_veto
 from higgs_cp.production.mutau_vars import mT 
 from higgs_cp.production.weights import pu_weight,get_mc_weight,muon_weight
@@ -23,6 +24,7 @@ from collections import defaultdict, OrderedDict
 
 np = maybe_import("numpy")
 ak = maybe_import("awkward")
+coffea = maybe_import("coffea")
 
 @selector(uses={"process_id", optional("mc_weight")})
 def custom_increment_stats(
@@ -84,6 +86,7 @@ def custom_increment_stats(
         json_filter,
         get_mc_weight,
         trigger_selection,
+        trigger_matching,
         jet_veto,
         study_muon_selection,
         study_tau_selection,
@@ -99,6 +102,7 @@ def custom_increment_stats(
         attach_coffea_behavior, 
         json_filter,
         trigger_selection,
+        trigger_matching,
         jet_veto,
         get_mc_weight,
         study_muon_selection,
@@ -164,14 +168,25 @@ def default(
                                                             **kwargs)
     results += dilepton_veto_results
     
-    events, extralep_veto_results = self[extra_lepton_veto](events,
+    events, extralep_veto_results, pair_mu_idx, pair_tau_idx = self[extra_lepton_veto](events,
                                                             pair_mu_idx,
                                                             pair_tau_idx,
                                                             call_force=True,
                                                             **kwargs)
-    
     results += extralep_veto_results
-   # write out process IDs
+    
+    print(f"Sum evt: before trig mathcing: {ak.sum(ak.num(pair_mu_idx,axis=1))}")
+    events, trigger_mathcing_results = self[trigger_matching](events,
+                                                            pair_mu_idx,
+                                                            pair_tau_idx,
+                                                            trigger_results,
+                                                            call_force=True,
+                                                            **kwargs)
+    #from IPython import embed
+    #embed()
+    results += trigger_mathcing_results
+    print(f"Sum evt: after trig mathcing: {ak.sum(trigger_mathcing_results.steps['trigger_matching'])}")
+    # write out process IDs
     events = self[process_ids](events, **kwargs)
     events = self[category_ids](events, results=results, **kwargs)
    

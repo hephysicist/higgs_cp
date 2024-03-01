@@ -15,12 +15,12 @@ def keep_columns(cfg: od.Config) -> None:
         "cf.ReduceEvents": {
             # general event info
             "run", "luminosityBlock", "event",
-            "PV.npvs","Pileup.nPU","genWeight", "LHEWeight.originalXWGTUP",
+            "PV.npvs","Pileup.nTrueInt","genWeight", "LHEWeight.originalXWGTUP",
             
             "deterministic_seed", "process_id", "cutflow.*",
-        } | {f"MET.{var}" for var in [
+        } | {f"PuppiMET.{var}" for var in [
                 "pt", "phi", "significance",
-                "covXX", "covXY", "covYY",
+                #"covXX", "covXY", "covYY",
                 ]     
         } | {f"Jet.{var}" for var in [
                 "pt", "eta", "phi", "mass", 
@@ -34,6 +34,10 @@ def keep_columns(cfg: od.Config) -> None:
                 "pt","eta","phi","mass","dxy","dz", "charge", 
                 "pfRelIso04_all","mT"
                 ] 
+        } | {
+        f"TrigObj.{var}" for var in [
+            "id", "pt", "eta", "phi", "filterBits",
+            ]
         } | {
         ColumnCollection.ALL_FROM_SELECTOR
         },
@@ -214,4 +218,21 @@ def add_variables(cfg: od.Config) -> None:
         binning=(30, 0,3),
         unit="GeV",
         x_title=r"Pileup weight",
+    )
+    
+    cfg.add_variable(
+        name="met_pt",
+        expression="PuppiMET.pt",
+        null_value=EMPTY_FLOAT,
+        binning=(50, 0,100),
+        unit="GeV",
+        x_title=r"MET $p_T$",
+    )
+    
+    cfg.add_variable(
+        name="met_phi",
+        expression="PuppiMET.phi",
+        null_value=EMPTY_FLOAT,
+        binning=(30, -3,3),
+        x_title=r"MET $\phi$",
     )

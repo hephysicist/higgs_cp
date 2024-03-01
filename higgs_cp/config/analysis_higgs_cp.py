@@ -40,18 +40,32 @@ analysis_hcp.x.cmssw_sandboxes = [
 # (used in wrapper_factory)
 analysis_hcp.x.config_groups = {}
 
-from higgs_cp.config.run_3_campaign import add_run3_campaign
-from cmsdb.campaigns.run3_2022_postEE_nano_tau_v12 import campaign_run3_2022_postEE_nano_tau_v12
+from higgs_cp.config.run3_preEE import add_run3_preEE
+from cmsdb.campaigns.run3_2022_preEE_nano_tau_v12 import campaign_run3_2022_preEE_nano_tau_v12
 
-add_run3_campaign(analysis_hcp,
-                  campaign_run3_2022_postEE_nano_tau_v12.copy(),
-                  config_name=f"{campaign_run3_2022_postEE_nano_tau_v12.name}",
+add_run3_preEE(analysis_hcp,
+                  campaign_run3_2022_preEE_nano_tau_v12.copy(),
+                  config_name=f"{campaign_run3_2022_preEE_nano_tau_v12.name}",
                   config_id = 22,)
 
-add_run3_campaign(analysis_hcp,
+add_run3_preEE(analysis_hcp,
+                  campaign_run3_2022_preEE_nano_tau_v12.copy(),
+                  config_name=f"{campaign_run3_2022_preEE_nano_tau_v12.name}_limited",
+                  config_id = 221,
+                  limit_dataset_files=1)
+
+from higgs_cp.config.run3_postEE import add_run3_postEE
+from cmsdb.campaigns.run3_2022_postEE_nano_tau_v12 import campaign_run3_2022_postEE_nano_tau_v12
+
+add_run3_postEE(analysis_hcp,
+                  campaign_run3_2022_postEE_nano_tau_v12.copy(),
+                  config_name=f"{campaign_run3_2022_postEE_nano_tau_v12.name}",
+                  config_id = 222)
+
+add_run3_postEE(analysis_hcp,
                   campaign_run3_2022_postEE_nano_tau_v12.copy(),
                   config_name=f"{campaign_run3_2022_postEE_nano_tau_v12.name}_limited",
-                  config_id = 221,
+                  config_id = 223,
                   limit_dataset_files=1)
 
 
@@ -62,12 +76,12 @@ from cmsdb.campaigns.run2_UL2018_nano_tau_v10 import campaign_run2_UL2018_nano_t
 add_run_2_ul2018_campaign(analysis_hcp,
                           campaign_run2_UL2018_nano_tau_v10.copy(),
                           config_name=f"{campaign_run2_UL2018_nano_tau_v10.name}",
-                          config_id = 1)
+                          config_id = 181)
 
 add_run_2_ul2018_campaign(analysis_hcp,
                           campaign_run2_UL2018_nano_tau_v10.copy(),
                           config_name=f"{campaign_run2_UL2018_nano_tau_v10.name}_limited",
-                          config_id = 151,
+                          config_id = 182,
                           limit_dataset_files = 1)
 
 
