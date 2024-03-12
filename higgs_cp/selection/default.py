@@ -194,7 +194,7 @@ def default(
     event_sel = reduce(and_, results.steps.values())
     results.event = event_sel
     
-    events = remove_ak_column(events, "Muon.mT")
+    #events = remove_ak_column(events, "Muon.mT")
     # some cutflow features This function interfere with get_mc_weights
     #events = self[cutflow_features](events, results.objects, **kwargs)
 
