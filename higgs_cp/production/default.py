@@ -8,9 +8,9 @@ from columnflow.util import maybe_import
 from columnflow.production.normalization import normalization_weights
 from columnflow.production.categories import category_ids
 from higgs_cp.production.example import features, cutflow_features 
-from higgs_cp.production.mutau_vars import dilepton_mass, mT
-from higgs_cp.production.weights import pu_weight, muon_weight
-
+from higgs_cp.production.mutau_vars import dilepton_mass, mT, rel_charge
+from higgs_cp.production.weights import pu_weight, muon_weight, tau_weight
+from higgs_cp.calibration.tau import tau_energy_scale
 ak = maybe_import("awkward")
 
 pdgId_map = {
@@ -35,24 +35,24 @@ pdgId_map = {
 
 @producer(
     uses={
-        category_ids, features, normalization_weights, cutflow_features, dilepton_mass, mT, pu_weight, muon_weight
+        rel_charge, category_ids, features, normalization_weights, cutflow_features, dilepton_mass, mT, pu_weight, muon_weight, tau_weight,
     },
     produces={
-        category_ids, features, normalization_weights, cutflow_features, dilepton_mass, mT, pu_weight, muon_weight
+        rel_charge, category_ids, features, normalization_weights, cutflow_features, dilepton_mass, mT, pu_weight, muon_weight, tau_weight
     },
 )
 def default(self: Producer, events: ak.Array, **kwargs) -> ak.Array:
-    # category ids
+    events = self[rel_charge](events, **kwargs)
     events = self[category_ids](events, **kwargs)
     if self.dataset_inst.is_mc:
         # add corrected mc weights
         events = self[pu_weight](events, **kwargs)
         events = self[muon_weight](events, **kwargs)
-        
+        events = self[tau_weight](events, **kwargs) 
         events = self[normalization_weights](events, **kwargs)
+        
     # features
     events = self[features](events, **kwargs)
     events = self[dilepton_mass](events, **kwargs)
     events = self[mT](events, **kwargs)
-    #embed()
     return events

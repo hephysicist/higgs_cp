@@ -10,7 +10,7 @@ from columnflow.selection import Selector, SelectionResult, selector
 from columnflow.columnar_util import set_ak_column
 from columnflow.util import DotDict, maybe_import
 from columnflow.production.util import attach_coffea_behavior
-#from IPython import embed
+
 
 
 np = maybe_import("numpy")
@@ -43,7 +43,7 @@ def study_muon_selection(
         "mediumID"            : events.Muon.mediumId == 1,
         "muon_dxy_0p045"      : abs(events.Muon.dxy) < 0.045,
         "muon_dz_0p2"         : abs(events.Muon.dz) < 0.2,
-        "muon_iso_0p15"       : events.Muon.pfRelIso04_all < 0.15
+        #"muon_iso_0p15"      : events.Muon.pfRelIso04_all < 0.15 #This variable is used in categories' definition to estimate QCD
     }
     object_mask = ak.ones_like(events.Muon.pt, dtype=np.bool_)
     selection_steps = {}
@@ -60,6 +60,7 @@ def study_muon_selection(
         f"Tau.{var}" for var in [
         "pt","eta","dz", 
         "idDeepTau2018v2p5VSjet", "idDeepTau2018v2p5VSe", "idDeepTau2018v2p5VSmu", 
+        "decayMode", "decayModePNet",
         ] 
     },
     exposed=False,
@@ -74,20 +75,19 @@ def study_tau_selection(
     # Tau selection returning two sets of indidces for default and veto muons.
    
     # pt sorted indices for converting masks to indices
-    
-    
+    deep_tau = self.config_inst.x.deep_tau
     selections = {
-        "DeepTauVSjet"  : events.Tau.idDeepTau2018v2p5VSjet >= 5, #Medium DeepTau VS jet working point
-        "DeepTauVSe"    : events.Tau.idDeepTau2018v2p5VSe   >= 2, #VVLoose DeepTau VS electron working point
-        "DeepTauVSmu"   : events.Tau.idDeepTau2018v2p5VSmu >= 4, #Tight  DeepTau VS muon working point
+        "DeepTauVSjet"  : events.Tau.idDeepTau2018v2p5VSjet >= deep_tau.vs_e_jet_wps[deep_tau.vs_jet], #Medium DeepTau VS jet working point
+        "DeepTauVSe"    : events.Tau.idDeepTau2018v2p5VSe   >= deep_tau.vs_e_jet_wps[deep_tau.vs_e], #VVLoose DeepTau VS electron working point
+        "DeepTauVSmu"   : events.Tau.idDeepTau2018v2p5VSmu >= deep_tau.vs_mu_wps[deep_tau.vs_mu], #Tight  DeepTau VS muon working point
         "tau_eta_2p3"   : abs(events.Tau.eta) < 2.3,
         "tau_dz_0p2"    : abs(events.Tau.dz) < 0.2,
-        "tau_pt_20"     : events.Tau.pt > 20
-    }
-    
+        "tau_pt_20"     : events.Tau.pt > 20,
+        "tau_1and3prong": (events.Tau.decayMode != 5) & (events.Tau.decayMode != 6) #Remove 2 prong decays
+        }
     object_mask = ak.ones_like(events.Tau.pt, dtype=np.bool_)
     selection_steps = {}
-    #embed()
+    #from IPython import embed; embed()
     for cut_name in selections.keys():
         object_mask = object_mask & selections[cut_name]
         selection_steps[cut_name] = np.array(ak.sum(selections[cut_name], axis=1) > 0, dtype=np.bool_)
@@ -137,7 +137,6 @@ def select_from_multiple_pairs(events: ak.Array,
         
             first_muon = muon_idx[pair_idx_sorted][:,:1]
             first_tau  = tau_idx[pair_idx_sorted][:,:1]
-            #embed()
             #print(f"{varname}: lead = {leading_particle[ak.num(muons,axis=1)>1][varname][0]}, sublead = {subleading_particle[ak.num(muons,axis=1)>1][varname][0]}")
             if do_ascending:
                 selection = ak.fill_none(leading_particle[varname] < subleading_particle[varname],False) #Lower isolation for muon
@@ -209,7 +208,7 @@ def mutau_selection(
     
     pair_mu_raw_idx, pair_tau_raw_idx = ak.unzip(ak.cartesian([preselected_muon_indices,
                                                      preselected_tau_indices], axis=1))
-    is_os               = (pair_mu.charge * pair_tau.charge) < 0 #Opposite sign mask
+    #is_os               = (pair_mu.charge * pair_tau.charge) < 0 #Opposite sign mask, I created a custom producer to save this variable and create categories for QCD estimation
     deltaR_selection    = pair_mu.delta_r(pair_tau) > 0.5 #dR between pair constituents
     mT_selection        = pair_mu.mT < 50 # effective mass of muon and MET < 50 GeV/c2
     mutau_selections = {}
@@ -217,7 +216,7 @@ def mutau_selection(
     #mutau_selections['mutau_dr_0p5']    = np.array(ak.sum(deltaR_selection, axis=1) > 0, dtype=np.bool_)
     #mutau_selections['mutau_mt_50']     = np.array(ak.sum(mT_selection,     axis=1) > 0, dtype=np.bool_)
     
-    pair_preselection = is_os & deltaR_selection & mT_selection
+    pair_preselection = deltaR_selection & mT_selection #Removed is_os variable to create QCD categories
     
     #Selection of a events with a single pair passed the preselection
     single_pair = (ak.num(pair_preselection, axis=1) == 1) & (ak.sum(pair_preselection, axis=1) == 1) #Check that event contains exactly one pair and this pair passed the preselection
@@ -250,7 +249,6 @@ def mutau_selection(
     
     # mutau_selections['sel_pairs'] = np.array(sel_multiple_pairs, dtype=np.bool_)
     # if ak.any(sel_multiple_pairs):
-    #    #embed()
     #    pass
     # sel_muon_idx = ak.drop_none(ak.firsts(sel_muon_idx, axis=1))
     # sel_tau_idx = ak.drop_none(ak.firsts(sel_tau_idx, axis=1))

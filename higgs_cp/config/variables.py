@@ -27,8 +27,10 @@ def keep_columns(cfg: od.Config) -> None:
                 "btagDeepFlavB", "hadronFlavour",
                 ] 
         } | {f"Tau.{var}" for var in [
-                "pt","eta","phi","mass","dxy","dz", "charge", "rawDeepTau2018v2p5VSjet",
-                "idDeepTau2018v2p5VSjet", "idDeepTau2018v2p5VSe", "idDeepTau2018v2p5VSmu", 
+                "pt","eta","phi","mass","dxy","dz", "charge", 
+                "rawDeepTau2018v2p5VSjet","idDeepTau2018v2p5VSjet", "idDeepTau2018v2p5VSe", "idDeepTau2018v2p5VSmu", 
+                "decayMode", "decayModePNet", "genPartFlav",
+                "pt_no_tes", "mass_no_tes"
                 ] 
         } | {f"Muon.{var}" for var in [
                 "pt","eta","phi","mass","dxy","dz", "charge", 
@@ -194,6 +196,15 @@ def add_variables(cfg: od.Config) -> None:
     )
     
     cfg.add_variable(
+        name="tau_pt_no_tes",
+        expression="Tau.pt_no_tes",
+        null_value=EMPTY_FLOAT,
+        binning=(30, 25, 85),
+        unit="GeV",
+        x_title=r"tau $p_{T}$ (no TES)",
+    )
+    
+    cfg.add_variable(
         name="muon_mT",
         expression="Muon.mT",
         null_value=EMPTY_FLOAT,
@@ -203,12 +214,30 @@ def add_variables(cfg: od.Config) -> None:
     )
     
     cfg.add_variable(
+        name="muon_iso",
+        expression="Muon.pfRelIso04_all",
+        null_value=EMPTY_FLOAT,
+        binning=(30, 0.0, 0.3),
+        unit="",
+        x_title=r"muon pfRelIso04_all",
+    )
+    
+    cfg.add_variable(
         name="mutau_mass",
         expression="mutau_mass",
         null_value=EMPTY_FLOAT,
         binning=(40, 0.0, 200.0),
         unit="GeV",
         x_title=r"$m_{vis}$",
+    )
+    
+    cfg.add_variable(
+        name="mutau_mass_no_tes",
+        expression="mutau_mass_no_tes",
+        null_value=EMPTY_FLOAT,
+        binning=(40, 0.0, 200.0),
+        unit="GeV",
+        x_title=r"$m_{vis}$(no TES)",
     )
     
     cfg.add_variable(
@@ -235,4 +264,40 @@ def add_variables(cfg: od.Config) -> None:
         null_value=EMPTY_FLOAT,
         binning=(30, -3,3),
         x_title=r"MET $\phi$",
+    )
+    
+    
+    
+    
+    #single bin variables for transfer factor calculation
+    cfg.add_variable(
+        name="muon_eta_1bin",
+        expression="Muon.eta",
+        null_value=EMPTY_FLOAT,
+        binning=(1, -3.0, 3.0),
+        x_title=r"muon $\eta$",
+    )
+    
+    cfg.add_variable(
+        name="muon_pt_1bin",
+        expression="Muon.pt",
+        null_value=EMPTY_FLOAT,
+        binning=(1, 20.0, 80.0),
+        unit="GeV",
+        x_title=r"muon $p_{T}$",
+    )
+    cfg.add_variable(
+        name="muon_phi_1bin",
+        expression="Muon.phi",
+        null_value=EMPTY_FLOAT,
+        binning=(1, -3.14159, 3.14159),
+        x_title=r"muon $\varphi$",
+    )
+    cfg.add_variable(
+        name="mutau_mass_1bin",
+        expression="mutau_mass",
+        null_value=EMPTY_FLOAT,
+        binning=(1, 0.0, 200.0),
+        unit="GeV",
+        x_title=r"$m_{vis}$",
     )

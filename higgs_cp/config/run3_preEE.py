@@ -45,14 +45,19 @@ def add_run3_preEE (ana: od.Analysis,
         #W + jets
         "wj",
         #diboson
+        "vv", #diboson inclusive
         "ww",
         "wz",
         "zz",
-        #ttbar & single top
+        #ttbar 
+        "tt", # ttbar inclusive
         "tt_sl",
         "tt_dl",
         "tt_fh",
-        
+        #single top
+        "st",
+        "st_tchannel_t",
+        "st_twchannel",
     ]
     for process_name in process_names:
         # add the process
@@ -63,10 +68,12 @@ def add_run3_preEE (ana: od.Analysis,
             if proc.name == "wj": proc.color1 = (201,89,84)
             if proc.name == "tt_sl": proc.color1 = (153,153,204)
             if proc.name == "tt_dl": proc.color1 = (184,184,227)
-            if proc.name == "tt_dl": proc.color1 = (87,87,141)
-            if proc.name == "ww" : proc.color1 = (191,130,119)
-            if proc.name == "wz" : proc.color1 = (153,83,70)
-            if proc.name == "zz" : proc.color1 = (212,167,160)
+            if proc.name == "tt_fh": proc.color1 = (87,87,141)
+            if proc.name == "ww" : proc.color1 = (102,204,102)
+            if proc.name == "wz" : proc.color1 = (49,157,49)
+            if proc.name == "zz" : proc.color1 = (120,214,120)
+            
+            if proc.name == "vv" : proc.color1 = (102,204,102)
 
         # configuration of colors, labels, etc. can happen here
         
@@ -85,10 +92,18 @@ def add_run3_preEE (ana: od.Analysis,
         "ww",
         "wz",
         "zz",
-        #ttbar & single top
+        #ttbar
         "tt_sl",
         "tt_dl",
         "tt_fh",
+        #single top t-channel
+        "st_t_bbarq",
+        "st_tbar_bq",
+        # single top tW channel
+        "st_t_wminus_to_lnu2q",
+        "st_t_wminus_to_2l2nu",
+        "st_tbar_wplus_to_lnu2q",
+        "st_tbar_wplus_to_2l2nu",
         ]
     
     for dataset_name in dataset_names:
@@ -103,28 +118,12 @@ def add_run3_preEE (ana: od.Analysis,
     # verify that the root process of all datasets is part of any of the registered processes
     verify_config_processes(cfg, warn=True)
 
-
-    # triggers required, sorted by primary dataset tag for recorded data
-    # cfg.x.trigger_matrix = [
-    #     (
-    #         "SingleMuon", {
-    #             "IsoMu24",
-    #             "IsoMu27",
-    #         },
-    #     ),
-    # ]
-    # # union of all triggers for use in MC
-    # cfg.x.all_triggers = {
-    #     trigger
-    #     for _, triggers in cfg.x.trigger_matrix
-    #     for trigger in triggers
-    # }
-    
+  
     from higgs_cp.config.triggers import add_triggers_run3_2022_preEE
     add_triggers_run3_2022_preEE(cfg)
 
     # default objects, such as calibrator, selector, producer, ml model, inference model, etc
-    cfg.x.default_calibrator = "example"
+    cfg.x.default_calibrator = "main"
     cfg.x.default_selector = "default"
     cfg.x.default_producer = "default"
     cfg.x.default_ml_model = None
@@ -134,7 +133,10 @@ def add_run3_preEE (ana: od.Analysis,
 
     # process groups for conveniently looping over certain processs
     # (used in wrapper_factory and during plotting)
-    cfg.x.process_groups = {}
+    cfg.x.process_groups = {
+        "diboson": ["ww", "wz", "zz"],
+        "tt" : ["tt_sl","tt_dl","tt_fh"]
+    }
 
     # dataset groups for conveniently looping over certain datasets
     # (used in wrapper_factory and during plotting)
@@ -180,7 +182,39 @@ def add_run3_preEE (ana: od.Analysis,
 
     # register shifts
     cfg.add_shift(name="nominal", id=0)
-
+    vs_e_jet_wps = {'VVVLoose' : 1,
+                  'VVLoose'    : 2,
+                  'VLoose'     : 3,
+                  'Loose'      : 4,
+                  'Medium'     : 5,
+                  'Tight'      : 6,
+                  'VTight'     : 7,
+                  'VVTight'    : 8,}
+    
+    vs_mu_wps = {'VLoose' : 1,
+               'Loose'    : 2,
+               'Medium'   : 3,
+               'Tight'    : 4}
+  
+    cfg.x.deep_tau = DotDict.wrap({
+        "tagger": "DeepTau2018v2p5",
+        "vs_e"          : "VVLoose",
+        "vs_mu"         : "Tight",
+        "vs_jet"        : "Medium",
+        "vs_e_jet_wps"  : {'VVVLoose'   : 1,
+                           'VVLoose'    : 2,
+                           'VLoose'     : 3,
+                           'Loose'      : 4,
+                           'Medium'     : 5,
+                           'Tight'      : 6,
+                           'VTight'     : 7,
+                           'VVTight'    : 8},
+        "vs_mu_wps"     : {'VLoose' : 1,
+                           'Loose'  : 2,
+                           'Medium' : 3,
+                           'Tight'  : 4}
+        })
+    
     cfg.x.external_files = DotDict.wrap({
         # lumi files
         "lumi": {
@@ -192,8 +226,8 @@ def add_run3_preEE (ana: od.Analysis,
             "data" : "/afs/cern.ch/user/s/stzakhar/work/run3_taufw/CMSSW_10_6_13/src/TauFW/PicoProducer/data/pileup/Data_PileUp_2022_preEE.root",
             "mc"   : "/afs/cern.ch/user/s/stzakhar/work/run3_taufw/CMSSW_10_6_13/src/TauFW/PicoProducer/data/pileup/MC_PileUp_2022.root"
         },
-        "muon_correction" : "/afs/cern.ch/user/s/stzakhar/work/run3_taufw/CMSSW_10_6_13/src/TauFW/PicoProducer/data/lepton/MuonPOG/Run2022preEE/muon_SFs_2022_preEE.root"
-
+        "muon_correction" : "/afs/cern.ch/user/s/stzakhar/work/run3_taufw/CMSSW_10_6_13/src/TauFW/PicoProducer/data/lepton/MuonPOG/Run2022preEE/muon_SFs_2022_preEE.root",
+        "tau_correction"  : "/afs/cern.ch/user/s/stzakhar/work/higgs_cp/data/corrections/tau/POG/TAU/2022_preEE/tau_DeepTau2018v2p5_2022_preEE.json.gz"
     })
 
     # target file size after MergeReducedEvents in MB
@@ -205,9 +239,10 @@ def add_run3_preEE (ana: od.Analysis,
     # event weight columns as keys in an OrderedDict, mapped to shift instances they depend on
     #get_shifts = functools.partial(get_shifts_from_sources, cfg)
     cfg.x.event_weights = DotDict({
-        "normalization_weight": [],
-        "pu_weight": [],
-        "muon_weight": [],
+        "normalization_weight"  : [],
+        "pu_weight"             : [],
+        "muon_weight"           : [],
+        "tau_id_sf"             : [],
     })
 
     # versions per task family, either referring to strings or to callables receving the invoking
@@ -258,21 +293,10 @@ def add_run3_preEE (ana: od.Analysis,
         print(campagn_name)
         cfg.x.get_dataset_lfns_remote_fs = lambda dataset_inst: f"wlcg_fs_{campagn_name}"
         
-        # add categories using the "add_category" tool which adds auto-generated ids
-    # the "selection" entries refer to names of selectors, e.g. in selection/example.py
-    add_category(
-        cfg,
-        name="incl",
-        selection="cat_incl",
-        label="inclusive",
-    )
-    add_category(
-        cfg,
-        name="2j",
-        selection="cat_2j",
-        label="2 jets",
-    )
-    
+    # add categories using the "add_category" tool which adds auto-generated ids
+    from higgs_cp.config.categories import add_categories
+    add_categories(cfg)
+        
     from higgs_cp.config.variables import add_variables
     add_variables(cfg)
     
