@@ -6,7 +6,7 @@ wrapper_args=(
     --configs $config
     --datasets $datasets
     --version $version
-    --cf.ReduceEvents-workflow local
+    --cf.ReduceEvents-workflow htcondor
     --cf.ReduceEvents-branch -1
     "${@:2}"
     )

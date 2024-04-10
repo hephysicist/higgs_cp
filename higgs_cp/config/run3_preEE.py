@@ -42,6 +42,8 @@ def add_run3_preEE (ana: od.Analysis,
         "data",
         #Drell-Yan
         "dy_lep",
+        "dy_z2mumu",
+        "dy_z2tautau",
         #W + jets
         "wj",
         #diboson
@@ -63,7 +65,7 @@ def add_run3_preEE (ana: od.Analysis,
         # add the process
         proc = cfg.add_process(procs.get(process_name))
         if proc.is_mc:
-            if proc.name == "dy_lep": proc.color1 = (255,204,102)
+            if proc.name == "dy_lep": proc.color1 = (223,102,72)
             if proc.name == "h_ggf_tautau": proc.color1 = (51,53,204)
             if proc.name == "wj": proc.color1 = (201,89,84)
             if proc.name == "tt_sl": proc.color1 = (153,153,204)

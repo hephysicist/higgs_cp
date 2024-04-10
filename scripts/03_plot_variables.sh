@@ -6,8 +6,9 @@ args=(
         --config $config
         --processes $processes
         --version $version
-        --datasets $datasets
-        --variables mutau_mass #muon_pt,muon_eta,muon_phi,tau_pt,tau_eta,tau_phi,muon_mT,mutau_mass,met_pt,met_phi
+        --categories cat_d
+        --variables mutau_mass #,mutau_mass_no_tes,muon_pt,muon_eta,muon_phi,tau_pt,tau_eta,tau_phi,muon_mT,mutau_mass,met_pt,met_phi
+        #--variables muon_iso #,muon_eta_1bin,mutau_mass_1bin
         --general-settings "cms-label=pw"
         "${@:2}"
     )
