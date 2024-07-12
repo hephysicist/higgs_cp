@@ -9,27 +9,6 @@ np = maybe_import("numpy")
 coffea = maybe_import("coffea")
 # helper
 set_ak_column_f32 = functools.partial(set_ak_column, value_type=np.float32)
-# @producer(
-#     uses = 
-#     {
-#         f"Muon.{var}" for var in ["pt", "eta","phi", "mass","charge"]
-#     } | {
-#         f"Tau.{var}" for var in ["pt","eta","phi", "mass", "dxy", "dz", "charge"] 
-#     } | {attach_coffea_behavior},
-#     produces={
-#         "mutau_mass"
-#     },
-# )
-# def dilepton_mass(self: Producer, events: ak.Array, **kwargs) -> ak.Array:
-#     print("Producing dilepton mass...")
-#     events = self[attach_coffea_behavior](events, **kwargs)
-#     muon = ak.firsts(events.Muon, axis=1)
-#     tau = ak.firsts(events.Tau, axis=1)
-#     mutau_obj = muon + tau
-#     mutau_mass = ak.where(mutau_obj.mass2 >=0, mutau_obj.mass, EMPTY_FLOAT)
-#     events = set_ak_column_f32(events,"mutau_mass",mutau_mass)
-    
-#     return events
 
 @producer(
     uses = 
@@ -72,7 +51,8 @@ def dilepton_mass(self: Producer, events: ak.Array, **kwargs) -> ak.Array:
 @producer(
     uses = 
     {
-        "Muon.charge","Tau.charge"
+        f"{lep}.charge" for lep in
+        [ "Electron", "Muon", "Tau"]    
     } | {attach_coffea_behavior},
     produces={
         "rel_charge"
@@ -81,8 +61,10 @@ def dilepton_mass(self: Producer, events: ak.Array, **kwargs) -> ak.Array:
 def rel_charge(self: Producer, events: ak.Array, **kwargs) -> ak.Array:
     print("Producing  pair relative charge...")
     events = self[attach_coffea_behavior](events, **kwargs)
-    lep1_charge = ak.firsts(events.Muon.charge, axis=1)
-    lep2_charge = ak.firsts(events.Tau.charge, axis=1)
+    # get channels from the config
+    channels = self.config_inst.channels.keys()
+    lep1_charge = ak.firsts(events.Tau.charge, axis=1)
+    lep2_charge = ak.zeros_like(events.Tau.charge, axis=1)
     events = set_ak_column_f32(events,f"rel_charge", lep1_charge * lep2_charge)
     return events
 
